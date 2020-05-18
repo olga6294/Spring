@@ -16,21 +16,21 @@ import static java.nio.file.StandardWatchEventKinds.*;
 @Service
 public class DirectoryListener {
 
+    private Environment environment;
     private FileController fileController;
-    private Keys keys;
     private MetaDataCollector metaDataCollector;
     private String directory;
 
     public DirectoryListener(
+            Environment environment,
             FileController fileController,
-            Keys keys,
             MetaDataCollector metaDataCollector
             )
     {
+        this.environment = environment;
         this.fileController = fileController;
-        this.keys = keys;
         this.metaDataCollector = metaDataCollector;
-        this.directory = keys.getListeningDirectory();
+        this.directory = environment.getProperty(Keys.DIRECTORY);
     }
 
     public void listen() {

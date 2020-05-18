@@ -15,7 +15,7 @@ public class DirectoryContentProvider {
 
     public List<String> provideDirectoryContent(String directory){
         try(Stream<Path> pathWalker = Files.walk(Paths.get(directory))){
-            return pathWalker.map(Path::toFile).map(file -> file.getName()).collect(Collectors.toList());
+            return pathWalker.map(Path::toFile).map(file -> file.getName()).skip(1).collect(Collectors.toList());
         }catch(IOException ioException){
             ioException.printStackTrace();
             throw new RuntimeException();
