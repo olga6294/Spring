@@ -33,7 +33,7 @@ public class FileUpdateService {
     public void updateFiles(){
         List<String> localDirectoryContent = directoryContentProvider.provideDirectoryContent(directory);
         List<String> dropboxDirectoryContent = dropboxDirectoryContentProvider.getDropboxContent();
-        if(localDirectoryContent.remove(dropboxDirectoryContent)){
+        if(localDirectoryContent.removeAll(dropboxDirectoryContent)){
             localDirectoryContent.forEach(file  ->  fileController.uploadFile(file, directory));
         }
     }
