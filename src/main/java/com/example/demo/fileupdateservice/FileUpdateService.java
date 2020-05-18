@@ -16,7 +16,7 @@ public class FileUpdateService {
     private FileController fileController;
 
     public void updateFiles(List<String> localDirectoryContent, List<String> dropboxDirectoryContent){
-        if(localDirectoryContent.remove(dropboxDirectoryContent)){
+        if(localDirectoryContent.removeAll(dropboxDirectoryContent)){
             for(String file : localDirectoryContent){
                 fileController.uploadFile(file, environment.getProperty("directory"));
             }
