@@ -1,8 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.directory.DirectoryContentProvider;
 import com.example.demo.directory.DirectoryListener;
-import com.example.demo.dropbox.DropboxDirectoryContentProvider;
 import com.example.demo.file.FileUpdateService;
 import com.example.demo.metadata.MetaDataProvider;
 import org.springframework.boot.SpringApplication;

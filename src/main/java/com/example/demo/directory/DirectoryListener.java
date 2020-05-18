@@ -1,5 +1,6 @@
 package com.example.demo.directory;
 
+import com.example.demo.config.Keys;
 import com.example.demo.file.FileController;
 import com.example.demo.metadata.MetaDataCollector;
 import org.springframework.core.env.Environment;
@@ -16,20 +17,20 @@ import static java.nio.file.StandardWatchEventKinds.*;
 public class DirectoryListener {
 
     private FileController fileController;
-    private Environment environment;
+    private Keys keys;
     private MetaDataCollector metaDataCollector;
     private String directory;
 
     public DirectoryListener(
             FileController fileController,
-            Environment environment,
+            Keys keys,
             MetaDataCollector metaDataCollector
             )
     {
         this.fileController = fileController;
-        this.environment = environment;
+        this.keys = keys;
         this.metaDataCollector = metaDataCollector;
-        this.directory = environment.getProperty("listening.directory");
+        this.directory = keys.getListeningDirectory();
     }
 
     public void listen() {
