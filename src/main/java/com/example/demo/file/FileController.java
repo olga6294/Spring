@@ -2,9 +2,8 @@ package com.example.demo.file;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.UploadErrorException;
-import com.example.demo.dropboxdirectory.DropboxConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.dropbox.DropboxConfiguration;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
@@ -12,9 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Component
+@AllArgsConstructor
 public class FileController {
 
-    @Autowired
     private DropboxConfiguration dropboxConfiguration;
 
     public void uploadFile(String filename, String directory){
@@ -24,12 +23,8 @@ public class FileController {
                     .uploadAndFinish(in);
 
             System.out.println(metadata.toStringMultiline());
-        } catch (UploadErrorException ex) {
+        } catch (IOException | DbxException ex) {
             System.err.println("Error uploading to Dropbox: " + ex.getMessage());
-        } catch (DbxException ex) {
-            System.err.println("DBXError uploading to Dropbox: " + ex.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 

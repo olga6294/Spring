@@ -1,18 +1,12 @@
 package com.example.demo.metadata;
 
+import org.springframework.stereotype.Component;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class MetaDataCollector {
 
-    private static MetaDataCollector metaDataCollector;
-
     private AtomicInteger filesSent = new AtomicInteger(0);
-
-    public static synchronized MetaDataCollector getInstance(){
-        if(metaDataCollector == null)
-            metaDataCollector = new MetaDataCollector();
-        return metaDataCollector;
-    }
 
     public void incrementFilesSent() {
         filesSent.addAndGet(1);

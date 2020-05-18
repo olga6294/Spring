@@ -1,15 +1,17 @@
-package com.example.demo.dropboxdirectory;
+package com.example.demo.dropbox;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.files.ListFolderBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
+@AllArgsConstructor
 public class DropboxDirectoryContentProvider {
 
-    @Autowired
     private DropboxConfiguration dropboxConfiguration;
 
     public List<String> getDropboxContent(){

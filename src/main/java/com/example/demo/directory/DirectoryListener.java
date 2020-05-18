@@ -1,9 +1,7 @@
-package com.example.demo.localdirectory;
+package com.example.demo.directory;
 
 import com.example.demo.file.FileController;
 import com.example.demo.metadata.MetaDataCollector;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +12,31 @@ import java.util.concurrent.Executors;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-@AllArgsConstructor
 @Service
 public class DirectoryListener {
 
-    @Autowired
     private FileController fileController;
-    @Autowired
     private Environment environment;
+    private MetaDataCollector metaDataCollector;
+    private String directory;
+
+    public DirectoryListener(
+            FileController fileController,
+            Environment environment,
+            MetaDataCollector metaDataCollector
+            )
+    {
+        this.fileController = fileController;
+        this.environment = environment;
+        this.metaDataCollector = metaDataCollector;
+        this.directory = environment.getProperty("listening.directory");
+    }
 
     public void listen() {
-        System.out.println("TADAA!!");
+
         try {
             WatchService watchService = FileSystems.getDefault().newWatchService();
-            Path directoryPath = Paths.get(environment.getProperty("directory"));
+            Path directoryPath = Paths.get(directory);
 
             directoryPath.register(watchService, ENTRY_CREATE);
 
@@ -41,11 +50,8 @@ public class DirectoryListener {
                 }
             }
 
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-            throw new RuntimeException();
-        } catch (InterruptedException interruptedException) {
-            interruptedException.printStackTrace();
+        } catch (InterruptedException | IOException exception) {
+            exception.printStackTrace();
             throw new RuntimeException();
         }
     }
@@ -54,10 +60,10 @@ public class DirectoryListener {
         WatchEvent.Kind<?> kind = event.kind();
 
         if (kind.equals(ENTRY_CREATE)) {
-            fileController.uploadFile(event.context().toString(), environment.getProperty("directory"));
+            fileController.uploadFile(event.context().toString(), directory);
             System.out.println("created " + event.context());
 
-            MetaDataCollector.getInstance().incrementFilesSent();
+            metaDataCollector.incrementFilesSent();
         }
     }
 }
